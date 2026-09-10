@@ -20,6 +20,12 @@ const therapistSchema = new mongoose.Schema(
       required: true,
       minlength: 4,
     },
+
+    status: {
+      type: String,
+      enum: ["Available", "Busy", "Leave"],
+      default: "Available",
+    },
   },
   {
     timestamps: true,

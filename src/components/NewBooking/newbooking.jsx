@@ -260,7 +260,7 @@ const handleBooking = async () => {
     !selectedTherapist ||
     selectedTherapist.status !== "Available"
   ) {
-    alert("Selected therapist is currently busy.");
+    alert("Selected therapist is currently unavailable.");
     return;
   }
 

@@ -45,6 +45,10 @@ const [status, setStatus] = useState("Available");
     (therapist) => therapist.status === "Busy"
   ).length;
 
+  const leaveCount = therapists.filter(
+  (therapist) => therapist.status === "Leave"
+).length;
+
   /* ================= RESET FORM ================= */
 
   const resetForm = () => {
@@ -207,6 +211,10 @@ if (password && password.length < 4) {
           <strong>{busyCount}</strong>
         </div>
       </div>
+      <div className="therapist-stat-card">
+  <span>On Leave</span>
+  <strong>{leaveCount}</strong>
+</div>
 
       {/* TABLE */}
 
@@ -270,12 +278,13 @@ if (password && password.length < 4) {
 
                     <td>
                       <span
-                        className={
-                          therapist.status ===
-                          "Available"
-                            ? "therapist-status available"
-                            : "therapist-status busy"
-                        }
+                       className={
+  therapist.status === "Available"
+    ? "therapist-status available"
+    : therapist.status === "Leave"
+    ? "therapist-status leave"
+    : "therapist-status busy"
+}
                       >
                         <i></i>
 
@@ -431,19 +440,21 @@ if (password && password.length < 4) {
                 </label>
 
                 <select
-                  value={status}
-                  onChange={(e) =>
-                    setStatus(e.target.value)
-                  }
-                >
-                  <option value="Available">
-                    Available
-                  </option>
+  value={status}
+  onChange={(e) => setStatus(e.target.value)}
+>
+  <option value="Available">
+    Available
+  </option>
 
-                  <option value="Busy">
-                    Busy
-                  </option>
-                </select>
+  <option value="Busy">
+    Busy
+  </option>
+
+  <option value="Leave">
+    Leave
+  </option>
+</select>
               </div>
             </div>
 

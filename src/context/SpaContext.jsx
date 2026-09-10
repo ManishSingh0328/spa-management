@@ -90,7 +90,7 @@ useEffect(() => {
         (therapist) => ({
           ...therapist,
           id: therapist._id,
-          status: "Available",
+          status: therapist.status || "Available",
           todayTherapy: 0,
         })
       );
@@ -135,7 +135,11 @@ useEffect(() => {
 
       return {
         ...therapist,
-        status: isBusy ? "Busy" : "Available",
+        status: isBusy
+  ? "Busy"
+  : therapist.status === "Leave"
+  ? "Leave"
+  : "Available",
         todayTherapy: todayCompletedCount,
       };
     })
@@ -277,11 +281,15 @@ setTherapists((previous) =>
           booking.date === todayDate
       ).length;
 
-    return {
-      ...therapist,
-      status: isBusy ? "Busy" : "Available",
-      todayTherapy: todayCompletedCount,
-    };
+  return {
+  ...therapist,
+  status: isBusy
+    ? "Busy"
+    : therapist.status === "Leave"
+    ? "Leave"
+    : "Available",
+  todayTherapy: todayCompletedCount,
+};
   })
 );
       /* ===== SYNC ROOMS ===== */
@@ -413,15 +421,14 @@ const startSession = async (bookingId) => {
   );
 
   if (
-    therapist &&
-    therapist.status === "Busy"
-  ) {
-    alert(
-      `${therapist.name} is already busy.`
-    );
-    return;
-  }
-
+  therapist &&
+  therapist.status !== "Available"
+) {
+  alert(
+    `${therapist.name} is currently unavailable.`
+  );
+  return;
+}
   if (
     room &&
     room.status === "Occupied"
@@ -560,12 +567,12 @@ const switchActiveSession = async (
       return false;
     }
 
-    if (therapist.status === "Busy") {
-      alert(
-        `${newTherapist} is already busy.`
-      );
-      return false;
-    }
+    if (therapist.status !== "Available") {
+  alert(
+    `${newTherapist} is currently unavailable.`
+  );
+  return false;
+}
   }
 
   if (roomChanged) {
@@ -839,7 +846,7 @@ useEffect(() => {
   name: therapistData.name,
   mobile: therapistData.mobile,
   password: therapistData.password,
-
+  status: therapistData.status,
 }),
 }
 );
@@ -854,13 +861,12 @@ useEffect(() => {
       return false;
     }
 
-    const newTherapist = {
-      ...result.data,
-      id: result.data._id,
-      status: "Available",
-      todayTherapy: 0,
-    };
-
+   const newTherapist = {
+  ...result.data,
+  id: result.data._id,
+  status: result.data.status || "Available",
+  todayTherapy: 0,
+};
     setTherapists((previous) => [
       ...previous,
       newTherapist,
@@ -893,6 +899,7 @@ useEffect(() => {
     body: JSON.stringify({
   name: updatedData.name,
   mobile: updatedData.mobile,
+  status: updatedData.status,
   ...(updatedData.password
     ? { password: updatedData.password }
     : {}),

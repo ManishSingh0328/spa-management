@@ -7,7 +7,7 @@
   box-sizing: border-box;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 
 .therapists-header {
   display: flex;
@@ -46,12 +46,15 @@
   border-radius: 9px;
   background: #1d3027;
   color: #ffffff;
+
   display: flex;
   align-items: center;
   gap: 8px;
+
   font-family: inherit;
   font-size: 12.5px;
   font-weight: 700;
+
   cursor: pointer;
   transition: 0.2s ease;
 }
@@ -60,11 +63,14 @@
   background: #294237;
 }
 
-/* STATS */
+/* ================= STATS ================= */
 
 .therapist-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  /* Total / Available / Busy / Leave */
+  grid-template-columns: repeat(4, 1fr);
+
   gap: 15px;
   margin-bottom: 20px;
 }
@@ -91,7 +97,7 @@
   font-weight: 700;
 }
 
-/* CARD */
+/* ================= CARD ================= */
 
 .therapists-card {
   border: 1px solid #e1e6e2;
@@ -109,9 +115,11 @@
   width: 340px;
   height: 42px;
   padding: 0 13px;
+
   border: 1px solid #d8ded9;
   border-radius: 8px;
   background: #fafbfa;
+
   display: flex;
   align-items: center;
   gap: 9px;
@@ -124,16 +132,19 @@
 
 .therapists-search input {
   width: 100%;
+
   border: none;
   outline: none;
+
   background: transparent;
   color: #2d3d35;
+
   font-family: inherit;
   font-size: 12.5px;
   font-weight: 500;
 }
 
-/* TABLE */
+/* ================= TABLE ================= */
 
 .therapists-table-wrapper {
   width: 100%;
@@ -147,19 +158,26 @@
 
 .therapists-table th {
   padding: 13px 20px;
+
   border-bottom: 1px solid #e7ebe8;
+
   background: #fafbfa;
   color: #748078;
+
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.5px;
+
   text-align: left;
 }
 
 .therapists-table td {
   padding: 16px 20px;
+
   border-bottom: 1px solid #edf0ed;
+
   color: #435149;
+
   font-size: 13px;
   font-weight: 500;
 }
@@ -183,12 +201,16 @@
   width: 37px;
   height: 37px;
   flex-shrink: 0;
+
   border-radius: 10px;
+
   background: #edf2ef;
   color: #3a5849;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 14px;
   font-weight: 700;
 }
@@ -199,14 +221,17 @@
   font-weight: 700;
 }
 
-/* STATUS */
+/* ================= STATUS ================= */
 
 .therapist-status {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+
   padding: 6px 9px;
+
   border-radius: 20px;
+
   font-size: 10.5px;
   font-weight: 700;
 }
@@ -217,6 +242,8 @@
   border-radius: 50%;
 }
 
+/* AVAILABLE */
+
 .therapist-status.available {
   background: #eaf4ed;
   color: #39724e;
@@ -225,6 +252,8 @@
 .therapist-status.available i {
   background: #4f8b63;
 }
+
+/* BUSY */
 
 .therapist-status.busy {
   background: #fff1df;
@@ -235,23 +264,38 @@
   background: #c98732;
 }
 
-/* THERAPY COUNT */
+/* LEAVE */
+
+.therapist-status.leave {
+  background: #f2edf9;
+  color: #6f4c9b;
+}
+
+.therapist-status.leave i {
+  background: #8b63b5;
+}
+
+/* ================= THERAPY COUNT ================= */
 
 .therapy-count {
   min-width: 31px;
   height: 27px;
   padding: 0 9px;
+
   border-radius: 7px;
+
   background: #eef3ef;
   color: #476153;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   font-size: 11px;
   font-weight: 700;
 }
 
-/* ACTIONS */
+/* ================= ACTIONS ================= */
 
 .therapist-actions {
   display: flex;
@@ -263,10 +307,13 @@
 .therapist-delete-btn {
   height: 30px;
   padding: 0 10px;
+
   border-radius: 7px;
+
   font-family: inherit;
   font-size: 10.5px;
   font-weight: 700;
+
   cursor: pointer;
   transition: 0.2s ease;
 }
@@ -297,43 +344,52 @@
   color: #929c96 !important;
 }
 
-/* DRAWER OVERLAY */
+/* ================= DRAWER OVERLAY ================= */
 
 .therapist-form-overlay {
   position: fixed;
   inset: 0;
   z-index: 2200;
+
   display: flex;
   justify-content: flex-end;
+
   background: rgba(17, 27, 22, 0.44);
   backdrop-filter: blur(2px);
 }
 
-/* DRAWER */
+/* ================= DRAWER ================= */
 
 .therapist-form-drawer {
   width: 470px;
   max-width: calc(100vw - 30px);
   height: 100vh;
+
   background: #ffffff;
+
   display: flex;
   flex-direction: column;
+
   box-shadow: -15px 0 40px rgba(20, 32, 26, 0.16);
 }
 
-/* DRAWER HEADER */
+/* ================= DRAWER HEADER ================= */
 
 .therapist-form-header {
   padding: 22px 24px 18px;
+
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
   border-bottom: 1px solid #e6ebe7;
 }
 
 .therapist-form-header p {
   margin: 0 0 5px;
+
   color: #987d52;
+
   font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 1.2px;
@@ -341,29 +397,39 @@
 
 .therapist-form-header h2 {
   margin: 0;
+
   color: #1c2d24;
+
   font-size: 22px;
   font-weight: 700;
 }
 
 .therapist-form-header span {
   display: block;
+
   margin-top: 4px;
+
   color: #849089;
+
   font-size: 11px;
 }
 
 .therapist-form-close {
   width: 34px;
   height: 34px;
+
   border: none;
   border-radius: 8px;
+
   background: #f0f3f1;
   color: #526159;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 21px;
+
   cursor: pointer;
 }
 
@@ -371,7 +437,7 @@
   background: #e5eae6;
 }
 
-/* FORM */
+/* ================= FORM ================= */
 
 .therapist-form-content {
   flex: 1;
@@ -384,8 +450,11 @@
 
 .therapist-form-group label {
   display: block;
+
   margin-bottom: 6px;
+
   color: #405148;
+
   font-size: 11px;
   font-weight: 600;
 }
@@ -394,54 +463,70 @@
 .therapist-form-group select {
   width: 100%;
   height: 41px;
+
   padding: 0 12px;
+
   border: 1px solid #d6ddd8;
   border-radius: 8px;
+
   outline: none;
+
   background: #fbfcfb;
   color: #26362d;
+
   font-family: inherit;
   font-size: 12px;
   font-weight: 500;
+
   box-sizing: border-box;
 }
 
 .therapist-form-group input:focus,
 .therapist-form-group select:focus {
   border-color: #799084;
+
   background: #ffffff;
+
   box-shadow: 0 0 0 3px rgba(63, 91, 77, 0.06);
 }
 
-/* DRAWER FOOTER */
+/* ================= DRAWER FOOTER ================= */
 
 .therapist-form-footer {
   padding: 14px 24px;
+
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+
   border-top: 1px solid #e5eae6;
 }
 
 .therapist-cancel-btn,
 .therapist-save-btn {
   height: 40px;
+
   padding: 0 17px;
+
   border-radius: 8px;
+
   font-family: inherit;
   font-size: 11.5px;
   font-weight: 700;
+
   cursor: pointer;
 }
 
 .therapist-cancel-btn {
   border: 1px solid #d5dcd7;
+
   background: #ffffff;
   color: #56645d;
 }
 
 .therapist-save-btn {
   border: none;
+
   background: #1d3027;
   color: #ffffff;
 }
@@ -450,7 +535,7 @@
   background: #294237;
 }
 
-/* RESPONSIVE */
+/* ================= RESPONSIVE ================= */
 
 @media (max-width: 800px) {
   .therapists-page {
@@ -462,6 +547,7 @@
     flex-direction: column;
   }
 
+  /* Mobile me cards one-by-one */
   .therapist-stats {
     grid-template-columns: 1fr;
   }

@@ -109,13 +109,11 @@ function Dashboard() {
 
   /* ================= AVAILABLE ================= */
 
-  const availableTherapists =
-    therapists.filter(
-      (therapist) =>
-        !busyTherapistNames.includes(
-          therapist.name
-        )
-    );
+ const availableTherapists =
+  therapists.filter(
+    (therapist) =>
+      therapist.status === "Available"
+  );
 
   /* ================= REMAINING TIMER ================= */
 

@@ -117,7 +117,7 @@ const getTherapists = async (req, res) => {
 
 const createTherapist = async (req, res) => {
   try {
-    const { name, mobile, password } = req.body;
+    const { name, mobile, password, status } = req.body;
 
     if (!name || !mobile || !password) {
       return res.status(400).json({
@@ -165,10 +165,11 @@ const createTherapist = async (req, res) => {
     );
 
     const therapist = await Therapist.create({
-      name: cleanName,
-      mobile: cleanMobile,
-      password: hashedPassword,
-    });
+  name: cleanName,
+  mobile: cleanMobile,
+  password: hashedPassword,
+  status: status || "Available",
+});
 
     const therapistData = therapist.toObject();
     delete therapistData.password;
@@ -191,7 +192,7 @@ const createTherapist = async (req, res) => {
 
 const updateTherapist = async (req, res) => {
   try {
-    const { name, mobile, password } = req.body;
+    const { name, mobile, password, status } = req.body;
 
     const therapist = await Therapist.findById(
       req.params.id
@@ -236,6 +237,9 @@ const updateTherapist = async (req, res) => {
 
     therapist.name = cleanName;
     therapist.mobile = cleanMobile;
+    if (status) {
+  therapist.status = status;
+}
 
     /* ================= PASSWORD ================= */
 
