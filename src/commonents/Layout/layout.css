@@ -1,0 +1,199 @@
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f6f3;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.app-sidebar {
+  width: 245px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  padding: 28px 18px 22px;
+
+  background: #17251f;
+  color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 100;
+}
+
+/* =========================
+   BRAND
+========================= */
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 0 9px;
+  margin-bottom: 42px;
+}
+
+.sidebar-logo {
+  width: 43px;
+  height: 43px;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(145deg, #d9c69d, #b99a64);
+
+  color: #18251f;
+
+  font-family: "Playfair Display", serif;
+  font-size: 23px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+.sidebar-brand h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sidebar-brand p {
+  margin: 5px 0 0;
+
+  color: #89968f;
+
+  font-size: 10px;
+  letter-spacing: 0.4px;
+}
+
+/* =========================
+   MENU
+========================= */
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-item {
+  width: 100%;
+  height: 46px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: transparent;
+  color: #9eaaa4;
+
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+
+  text-align: left;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+/* Active Page */
+
+.sidebar-item.active {
+  background: #263a31;
+  color: #ffffff;
+}
+
+.sidebar-icon {
+  width: 20px;
+
+  font-size: 17px;
+  text-align: center;
+
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+/* =========================
+   BOTTOM MENU
+========================= */
+
+.sidebar-bottom {
+  margin-top: auto;
+
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.sidebar-item.logout {
+  margin-top: 5px;
+  color: #baaaa5;
+}
+
+.sidebar-item.logout:hover {
+  color: #ffffff;
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.app-content {
+  width: calc(100% - 245px);
+  min-height: 100vh;
+
+  margin-left: 245px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1050px) {
+  .app-sidebar {
+    width: 210px;
+  }
+
+  .app-content {
+    width: calc(100% - 210px);
+    margin-left: 210px;
+  }
+}
+
+@media (max-width: 800px) {
+  .app-sidebar {
+    display: none;
+  }
+
+  .app-content {
+    width: 100%;
+    margin-left: 0;
+  }
+}

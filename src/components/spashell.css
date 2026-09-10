@@ -1,0 +1,220 @@
+.spa-shell {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f6f3;
+}
+
+/* ================= SIDEBAR ================= */
+
+.spa-sidebar {
+  width: 245px;
+  height: 100vh;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  padding: 28px 18px 22px;
+
+  background: #17251f;
+  color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 100;
+}
+
+/* ================= BRAND ================= */
+
+.spa-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 0 9px;
+  margin-bottom: 40px;
+}
+
+.spa-logo {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(
+    145deg,
+    #d9c69d,
+    #b99a64
+  );
+
+  color: #18251f;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+.spa-brand h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 21px;
+  font-weight: 700;
+
+  line-height: 1.1;
+}
+
+.spa-brand p {
+  margin: 6px 0 0;
+
+  color: #c1cbc6;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  letter-spacing: 0.35px;
+}
+
+/* ================= MENU ================= */
+
+.spa-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.spa-menu-item {
+  width: 100%;
+  height: 49px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #c4cec9;
+
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  font-family: inherit;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  text-align: left;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.spa-menu-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+}
+
+.spa-menu-item.active {
+  background: #2b4137;
+  color: #ffffff;
+
+  font-weight: 700;
+
+  box-shadow: inset 3px 0 0 #c9ad74;
+}
+
+.spa-menu-icon {
+  width: 21px;
+
+  flex-shrink: 0;
+
+  text-align: center;
+
+  font-size: 18px;
+
+  color: inherit;
+}
+
+/* ================= SIDEBAR BOTTOM ================= */
+
+.spa-sidebar-bottom {
+  margin-top: auto;
+
+  padding-top: 18px;
+
+  border-top: 1px solid
+    rgba(255, 255, 255, 0.12);
+}
+
+.spa-sidebar-bottom .spa-menu-item {
+  color: #c4cec9;
+}
+
+.spa-sidebar-bottom .spa-menu-item:hover {
+  color: #ffffff;
+}
+
+.spa-logout {
+  margin-top: 5px;
+
+  color: #d0bbb5 !important;
+}
+
+.spa-logout:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff !important;
+}
+
+/* ================= PAGE CONTENT ================= */
+
+.spa-content {
+  width: calc(100% - 245px);
+  min-height: 100vh;
+
+  margin-left: 245px;
+
+  color: #18221e;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1050px) {
+  .spa-sidebar {
+    width: 210px;
+  }
+
+  .spa-content {
+    width: calc(100% - 210px);
+    margin-left: 210px;
+  }
+
+  .spa-menu-item {
+    font-size: 14px;
+  }
+
+  .spa-brand h2 {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 800px) {
+  .spa-sidebar {
+    display: none;
+  }
+
+  .spa-content {
+    width: 100%;
+    margin-left: 0;
+  }
+}
