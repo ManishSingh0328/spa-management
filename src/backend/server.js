@@ -21,6 +21,7 @@ const allowedOrigins = [
   "http://localhost:5175",
   "http://localhost:4173",
   "http://192.168.1.4:4173",
+  "https://spa-therapist-app.vercel.app",
 ];
 app.use(
   cors({
