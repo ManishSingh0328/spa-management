@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSpa } from "../../context/SpaContext";
-import "./therapists.css";
-
+import "./Therapists.css";
 function Therapists() {
   const {
     therapists,
