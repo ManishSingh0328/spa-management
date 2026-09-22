@@ -1,0 +1,662 @@
+/* ===============================
+   THERAPIST SESSION APP
+================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: #f7faf7;
+}
+
+/* ===============================
+   PAGE
+================================ */
+
+.session-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  padding: 28px 18px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(66, 145, 94, 0.1),
+      transparent 35%
+    ),
+    #f7faf7;
+
+  color: #102720;
+}
+
+/* ===============================
+   HEADER
+================================ */
+
+.session-header {
+  width: 100%;
+  max-width: 430px;
+
+  text-align: center;
+
+  margin-bottom: 20px;
+}
+
+.session-logo {
+  width: 48px;
+  height: 48px;
+
+  margin: 0 auto 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e8f4eb;
+
+  color: #348558;
+
+  font-size: 27px;
+}
+
+.session-header h1 {
+  margin: 0;
+
+  font-size: 28px;
+  line-height: 1.2;
+
+  font-weight: 750;
+
+  letter-spacing: -0.7px;
+
+  color: #102b24;
+}
+
+.session-header p {
+  margin: 7px 0 0;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 2.4px;
+
+  color: #84918d;
+}
+
+/* ===============================
+   MAIN CARD
+================================ */
+
+.session-card {
+  width: 100%;
+  max-width: 430px;
+
+  padding: 22px 18px 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #e8eee9;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 14px 40px
+      rgba(27, 72, 48, 0.09);
+}
+
+/* ===============================
+   DETAILS
+================================ */
+
+.session-details {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.session-detail-row {
+  width: 100%;
+
+  min-height: 46px;
+
+  display: grid;
+
+  grid-template-columns:
+    40px 92px minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.session-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #eef6f0;
+
+  font-size: 16px;
+}
+
+.session-label {
+  font-size: 13px;
+
+  color: #71807a;
+
+  font-weight: 500;
+}
+
+.session-detail-row strong {
+  min-width: 0;
+
+  font-size: 14px;
+
+  line-height: 1.35;
+
+  font-weight: 700;
+
+  color: #142b25;
+
+  overflow-wrap: anywhere;
+}
+
+/* ===============================
+   DIVIDER
+================================ */
+
+.session-divider {
+  width: 100%;
+  height: 1px;
+
+  margin: 19px 0;
+
+  background: #e8ede9;
+}
+
+/* ===============================
+   STATUS
+================================ */
+
+.session-status {
+  width: fit-content;
+
+  margin: 0 auto;
+
+  padding: 7px 14px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  border-radius: 50px;
+
+  background: #f0f2f1;
+
+  color: #737d79;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.session-status span {
+  width: 8px;
+  height: 8px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #a7afac;
+}
+
+/* ACTIVE */
+
+.session-status.active {
+  background: #e8f5ec;
+
+  color: #28734c;
+}
+
+.session-status.active span {
+  background: #36a065;
+
+  box-shadow:
+    0 0 0 4px
+      rgba(54, 160, 101, 0.12);
+}
+
+/* COMPLETED */
+
+.session-status.completed {
+  background: #e8f5ec;
+
+  color: #28734c;
+}
+
+.session-status.completed span {
+  background: #36a065;
+}
+
+/* ===============================
+   TIMER
+================================ */
+
+.session-timer {
+  width: 100%;
+
+  margin-top: 17px;
+
+  text-align: center;
+
+  font-size: clamp(
+    52px,
+    16vw,
+    68px
+  );
+
+  line-height: 1;
+
+  font-weight: 750;
+
+  letter-spacing: 1px;
+
+  color: #0d2b23;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+.session-timer-message {
+  margin:
+    11px auto
+    20px;
+
+  padding: 0 10px;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  color: #7c8985;
+}
+
+/* ===============================
+   ACTION BUTTON
+================================ */
+
+.session-action-btn {
+  width: 100%;
+
+  min-height: 56px;
+
+  padding: 12px 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #348b5b,
+      #43a36e
+    );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 9px 22px
+      rgba(52, 139, 91, 0.22);
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.session-action-btn:active {
+  transform: scale(0.98);
+}
+
+.session-action-btn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+.session-action-btn.complete {
+  background:
+    linear-gradient(
+      135deg,
+      #24774c,
+      #34925e
+    );
+}
+
+/* ===============================
+   COMPLETED
+================================ */
+
+.session-completed {
+  width: 100%;
+
+  padding: 16px;
+
+  text-align: center;
+
+  border-radius: 15px;
+
+  background: #e9f6ed;
+
+  color: #26744c;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+/* ===============================
+   FOOTER
+================================ */
+
+.session-footer-note {
+  width: 100%;
+
+  margin-top: 16px;
+
+  padding: 10px 12px;
+
+  text-align: center;
+
+  border-radius: 11px;
+
+  background: #f0f7f2;
+
+  color: #4d765e;
+
+  font-size: 11px;
+
+  line-height: 1.4;
+}
+
+/* ===============================
+   ERROR
+================================ */
+
+.session-error {
+  width: 100%;
+
+  margin-bottom: 14px;
+
+  padding: 11px 12px;
+
+  text-align: center;
+
+  border-radius: 11px;
+
+  background: #fff0f0;
+
+  color: #b33a3a;
+
+  font-size: 12px;
+}
+
+.session-message {
+  width: calc(100% - 30px);
+
+  max-width: 430px;
+
+  margin: auto;
+
+  padding: 22px;
+
+  text-align: center;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 12px 35px
+      rgba(0, 0, 0, 0.08);
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.session-message.error {
+  color: #b33a3a;
+}
+
+/* ===============================
+   MOBILE APP VIEW
+================================ */
+
+@media (max-width: 600px) {
+  .session-page {
+    padding:
+      max(18px, env(safe-area-inset-top))
+      14px
+      max(18px, env(safe-area-inset-bottom));
+
+    justify-content: flex-start;
+  }
+
+  .session-header {
+    margin-bottom: 15px;
+  }
+
+  .session-logo {
+    width: 42px;
+    height: 42px;
+
+    margin-bottom: 6px;
+
+    font-size: 23px;
+  }
+
+  .session-header h1 {
+    font-size: 25px;
+  }
+
+  .session-header p {
+    margin-top: 5px;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+  }
+
+  .session-card {
+    flex: 1;
+
+    max-height: 680px;
+
+    padding: 20px 17px 17px;
+
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  .session-details {
+    gap: 8px;
+  }
+
+  .session-detail-row {
+    min-height: 42px;
+
+    grid-template-columns:
+      36px 86px minmax(0, 1fr);
+
+    gap: 7px;
+  }
+
+  .session-icon {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+  }
+
+  .session-label {
+    font-size: 12px;
+  }
+
+  .session-detail-row strong {
+    font-size: 13px;
+  }
+
+  .session-divider {
+    margin: 16px 0;
+  }
+
+  .session-timer {
+    margin-top: 15px;
+
+    font-size: clamp(
+      50px,
+      16vw,
+      64px
+    );
+  }
+
+  .session-timer-message {
+    margin-bottom: 17px;
+
+    font-size: 11px;
+  }
+
+  .session-action-btn {
+    min-height: 55px;
+
+    margin-top: auto;
+
+    font-size: 15px;
+  }
+
+  .session-footer-note {
+    margin-top: 13px;
+  }
+}
+
+/* ===============================
+   SMALL MOBILE
+================================ */
+
+@media (max-width: 370px) {
+  .session-page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .session-card {
+    padding:
+      17px 13px
+      14px;
+  }
+
+  .session-detail-row {
+    grid-template-columns:
+      32px 76px minmax(0, 1fr);
+
+    gap: 5px;
+  }
+
+  .session-icon {
+    width: 30px;
+    height: 30px;
+
+    font-size: 13px;
+  }
+
+  .session-label {
+    font-size: 11px;
+  }
+
+  .session-detail-row strong {
+    font-size: 12px;
+  }
+
+  .session-timer {
+    font-size: 48px;
+  }
+}
+
+/* ===============================
+   DESKTOP
+================================ */
+
+@media (min-width: 601px) {
+  .session-page {
+    justify-content: center;
+  }
+
+  .session-card {
+    max-width: 520px;
+
+    padding: 30px 32px 24px;
+  }
+
+  .session-header {
+    max-width: 520px;
+  }
+
+  .session-action-btn:hover {
+    transform: translateY(-2px);
+  }
+}

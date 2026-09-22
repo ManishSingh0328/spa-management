@@ -12,6 +12,7 @@ import Bookings from "./pages/Bookings/Bookings";
 import Therapists from "./pages/Therapists/Therapists";
 import Payments from "./pages/Payments/Payments";
 import Rooms from "./pages/Rooms/Rooms";
+import Session from "./pages/Session/Session";
 
 import SpaShell from "./components/spashell";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -40,6 +41,13 @@ function App() {
         {/* LOGIN */}
 
         <Route path="/" element={<Login />} />
+
+        {/* PUBLIC THERAPIST SESSION */}
+
+        <Route
+          path="/session/:token"
+          element={<Session />}
+        />
 
         {/* DASHBOARD */}
 

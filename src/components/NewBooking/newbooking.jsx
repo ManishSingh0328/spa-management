@@ -43,6 +43,8 @@ function NewBooking({ isOpen, onClose }) {
 
   const [time, setTime] =
     useState("");
+    const [createdBooking, setCreatedBooking] =
+  useState(null);
 
   /* ================= CURRENT AVAILABILITY ================= */
 
@@ -95,19 +97,20 @@ function NewBooking({ isOpen, onClose }) {
 
   /* ================= RESET ================= */
 
-  const resetForm = () => {
-    setClientName("");
-    setMobile("");
-    setGender("");
-    setService("");
-    setDuration("");
-    setAmount("");
-    setPaymentMode("");
-    setTherapist("");
-    setRoom("");
-    setDate("");
-    setTime("");
-  };
+ const resetForm = () => {
+  setClientName("");
+  setMobile("");
+  setGender("");
+  setService("");
+  setDuration("");
+  setAmount("");
+  setPaymentMode("");
+  setTherapist("");
+  setRoom("");
+  setDate("");
+  setTime("");
+  setCreatedBooking(null);
+};
 
   const handleClose = () => {
     resetForm();
@@ -283,7 +286,9 @@ const handleBooking = async () => {
   );
 
   if (therapistConflict) {
-    alert(`${therapist} is already booked for this time.`);
+   alert(
+  `${therapist} already has a booking during this time. Please select another therapist or change the booking time.`
+);
     return;
   }
 
@@ -294,7 +299,9 @@ const handleBooking = async () => {
   );
 
   if (roomConflict) {
-    alert(`${room} is already booked for this time.`);
+  alert(
+  `${room} already has a booking during this time. Please select another room or change the booking time.`
+);
     return;
   }
 
@@ -333,19 +340,69 @@ const response = await apiFetch(
 
     addBooking(result.data);
 
-    alert("Booking created successfully.");
+setCreatedBooking(result.data);
 
-    resetForm();
-    onClose();
+alert("Booking created successfully.");
   } catch (error) {
     console.error("Booking Error:", error);
     alert("Backend server connection failed.");
   }
 };
-  if (!isOpen) {
-    return null;
+
+/* ================= SEND WHATSAPP ================= */
+
+const handleWhatsApp = () => {
+  if (!createdBooking) {
+    return;
   }
 
+  const selectedTherapist = therapists.find(
+    (item) =>
+      item.name === createdBooking.therapist
+  );
+
+  if (!selectedTherapist?.mobile) {
+    alert("Therapist mobile number not found.");
+    return;
+  }
+
+  if (!createdBooking.sessionToken) {
+    alert("Session link not available.");
+    return;
+  }
+
+  const whatsappNumber =
+    `91${selectedTherapist.mobile.replace(/\D/g, "")}`;
+
+  const sessionLink =
+    `${window.location.origin}/session/${createdBooking.sessionToken}`;
+
+  const message = `New Therapy Session
+
+Client: ${createdBooking.clientName}
+Room: ${createdBooking.room}
+Therapy: ${createdBooking.service}
+Duration: ${createdBooking.duration}
+
+Start / Complete Session:
+${sessionLink}
+
+Tap the link above to open your session.`;
+
+  const whatsappUrl =
+    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+ window.open(
+  whatsappUrl,
+  "spaWhatsApp"
+);
+};
+
+if (!isOpen) {
+  return null;
+}
   return (
     <div
       className="new-booking-overlay"
@@ -760,21 +817,41 @@ const response = await apiFetch(
 
         {/* FOOTER */}
 
-        <div className="new-booking-footer">
-          <button
-            className="booking-cancel-btn"
-            onClick={handleClose}
-          >
-            Cancel
-          </button>
+     <div className="new-booking-footer">
+  {!createdBooking ? (
+    <>
+      <button
+        className="booking-cancel-btn"
+        onClick={handleClose}
+      >
+        Cancel
+      </button>
 
-          <button
-            className="booking-confirm-btn"
-            onClick={handleBooking}
-          >
-            Confirm Booking
-          </button>
-        </div>
+      <button
+        className="booking-confirm-btn"
+        onClick={handleBooking}
+      >
+        Confirm Booking
+      </button>
+    </>
+  ) : (
+    <>
+      <button
+        className="booking-cancel-btn"
+        onClick={handleClose}
+      >
+        Close
+      </button>
+
+      <button
+        className="booking-confirm-btn"
+        onClick={handleWhatsApp}
+      >
+        WhatsApp Therapist
+      </button>
+    </>
+  )}
+</div>
       </div>
     </div>
   );

@@ -15,7 +15,6 @@ function Therapists() {
 
   const [name, setName] = useState("");
 const [mobile, setMobile] = useState("");
-const [password, setPassword] = useState("");
 const [status, setStatus] = useState("Available");
 
   const [editId, setEditId] = useState(null);
@@ -54,7 +53,6 @@ const [status, setStatus] = useState("Available");
   const resetForm = () => {
   setName("");
 setMobile("");
-setPassword("");
 setStatus("Available");
   };
 
@@ -71,23 +69,13 @@ setStatus("Available");
   /* ================= SAVE ================= */
 
   const handleSave = async () => {
-  if (
-  !name.trim() ||
-  !mobile.trim() ||
-  (!editId && !password)
-) {
-  alert(
-    "Please enter therapist name, mobile number and password."
-  );
-  return;
-}
+  if (!name.trim() || !mobile.trim()) {
+    alert(
+      "Please enter therapist name and mobile number."
+    );
+    return;
+  }
 
-if (password && password.length < 4) {
-  alert(
-    "Password must be at least 4 characters."
-  );
-  return;
-}
   if (mobile.length !== 10) {
     alert(
       "Please enter a valid 10 digit mobile number."
@@ -109,23 +97,24 @@ if (password && password.length < 4) {
   }
 
   if (editId) {
-  const success = await updateTherapist(editId, {
-    name: name.trim(),
-    mobile,
-    status,
-    ...(password ? { password } : {}),
-  });
+    const success = await updateTherapist(
+      editId,
+      {
+        name: name.trim(),
+        mobile,
+        status,
+      }
+    );
 
-  if (success) {
-    closeForm();
-  }
-} else {
-  const success = await addTherapist({
-    name: name.trim(),
-    mobile,
-    password,
-    status,
-  });
+    if (success) {
+      closeForm();
+    }
+  } else {
+    const success = await addTherapist({
+      name: name.trim(),
+      mobile,
+      status,
+    });
 
     if (success) {
       closeForm();
@@ -416,23 +405,6 @@ if (password && password.length < 4) {
                   }
                 />
               </div>
-
-              <div className="therapist-form-group">
-  <label>
-    {editId ? "New Password" : "Password *"}
-  </label>
-
-  <input
-    type="password"
-    placeholder={
-      editId
-        ? "Leave blank to keep current password"
-        : "Enter login password"
-    }
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-  />
-</div>
 
               <div className="therapist-form-group">
                 <label>

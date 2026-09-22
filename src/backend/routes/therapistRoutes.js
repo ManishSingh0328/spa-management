@@ -1,8 +1,6 @@
 const express = require("express");
 
 const {
-  loginTherapist,
-  getTherapistMe,
   getTherapists,
   createTherapist,
   updateTherapist,
@@ -11,23 +9,7 @@ const {
 
 const protect = require("../middleware/authMiddleware");
 
-const protectTherapist = require(
-  "../middleware/therapistAuthMiddleware"
-);
-
 const router = express.Router();
-
-/* ================= THERAPIST LOGIN - PUBLIC ================= */
-
-router.post("/login", loginTherapist);
-
-/* ================= THERAPIST PROFILE ================= */
-
-router.get(
-  "/me",
-  protectTherapist,
-  getTherapistMe
-);
 
 /* ================= ADMIN PROTECTED ROUTES ================= */
 

@@ -1,73 +1,40 @@
 const express = require("express");
 
 const {
-
   createBooking,
-
   getBookings,
-
   startBookingSession,
-
   updateBooking,
-
   switchActiveSession,
-
   completeBookingSession,
-
-  getTherapistBookings,
-
-  acceptTherapistBooking,
-  startTherapistSession,
-  completeTherapistSession,
-
+  deleteBooking,
+  getPublicSession,
+  startPublicSession,
+  completePublicSession,
 } = require("../controllers/bookingController");
 
 const protect = require("../middleware/authMiddleware");
 
-const protectTherapist = require(
-
-  "../middleware/therapistAuthMiddleware"
-
-);
-
 const router = express.Router();
 
-/* ================= THERAPIST ROUTES ================= */
+/* ================= PUBLIC SESSION ROUTES ================= */
 
-// Logged-in therapist assigned bookings
-
+// Get Session Details
 router.get(
-
-  "/therapist/my-bookings",
-
-  protectTherapist,
-
-  getTherapistBookings
-
+  "/public/:token",
+  getPublicSession
 );
 
-// Accept therapist assignment
-
+// Start Session
 router.patch(
-
-  "/therapist/:id/accept",
-
-  protectTherapist,
-
-  acceptTherapistBooking
-
+  "/public/:token/start",
+  startPublicSession
 );
-router.patch(
-  "/therapist/:id/start",
-  protectTherapist,
-  startTherapistSession
-);
-// Complete therapist session
 
+// Complete Session
 router.patch(
-  "/therapist/:id/complete",
-  protectTherapist,
-  completeTherapistSession
+  "/public/:token/complete",
+  completePublicSession
 );
 
 /* ================= ADMIN PROTECTED ROUTES ================= */
@@ -75,27 +42,24 @@ router.patch(
 router.use(protect);
 
 // Create Booking
-
 router.post("/", createBooking);
 
 // Get All Bookings
-
 router.get("/", getBookings);
 
 // Start Session
-
 router.patch("/:id/start", startBookingSession);
 
 // Change Therapist / Room During Active Session
-
 router.patch("/:id/switch", switchActiveSession);
 
 // Complete Session
-
 router.patch("/:id/complete", completeBookingSession);
 
 // Edit Upcoming Booking
-
 router.patch("/:id", updateBooking);
+
+// Delete Upcoming Booking
+router.delete("/:id", deleteBooking);
 
 module.exports = router;

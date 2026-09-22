@@ -70,15 +70,6 @@ const bookingSchema = new mongoose.Schema(
       enum: ["Upcoming", "In Service", "Completed"],
       default: "Upcoming",
     },
-    therapistAccepted: {
-  type: Boolean,
-  default: false,
-},
-
-acceptedAt: {
-  type: Date,
-  default: null,
-},
 
     startedAt: {
       type: Date,
@@ -94,12 +85,23 @@ acceptedAt: {
       type: Date,
       default: null,
     },
+
+    sessionToken: {
+      type: String,
+      unique: true,
+      sparse: true,
+      index: true,
+      default: null,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const Booking = mongoose.model("Booking", bookingSchema);
+const Booking = mongoose.model(
+  "Booking",
+  bookingSchema
+);
 
 module.exports = Booking;

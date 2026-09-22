@@ -6,14 +6,15 @@ import { apiFetch } from "../../utils/api";
 
 function Bookings() {
   const {
-    bookings,
-    therapists,
-    rooms,
-    updateBooking,
-    startSession,
-    switchActiveSession,
-    completeSession,
-  } = useSpa();
+  bookings,
+  therapists,
+  rooms,
+  updateBooking,
+  deleteBooking,
+  startSession,
+  switchActiveSession,
+  completeSession,
+} = useSpa();
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] =
@@ -193,7 +194,25 @@ function Bookings() {
 
     completeSession(booking.id);
   };
+  /* ================= DELETE BOOKING ================= */
 
+const handleDelete = async (booking) => {
+  const confirmed = window.confirm(
+    `Delete booking for ${booking.clientName}?`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const success = await deleteBooking(
+    booking.id
+  );
+
+  if (success) {
+    alert("Booking deleted successfully.");
+  }
+};
   /* ================= OPEN EDIT UPCOMING ================= */
 
   const handleEdit = (booking) => {
@@ -917,17 +936,14 @@ function Bookings() {
                           >
                             Edit
                           </button>
-
                           <button
-                            className="start-session-btn"
-                            onClick={() =>
-                              handleStart(
-                                booking
-                              )
-                            }
-                          >
-                            Start
-                          </button>
+  className="delete-booking-btn"
+  onClick={() =>
+    handleDelete(booking)
+  }
+>
+  Delete
+</button>
                         </div>
                       )}
 

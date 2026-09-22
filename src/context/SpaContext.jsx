@@ -319,8 +319,15 @@ setTherapists((previous) =>
   };
 
   fetchBookings();
-}, []);
 
+const interval = setInterval(() => {
+  fetchBookings();
+}, 5000);
+
+return () => {
+  clearInterval(interval);
+};
+}, []);
  /* ================= ADD BOOKING ================= */
 
   const addBooking = (bookingData) => {
@@ -389,12 +396,55 @@ const updateBooking = (updatedBookingData) => {
   };
 
   setBookings((previous) =>
-    previous.map((booking) =>
-      booking.id === normalizedBooking.id
-        ? normalizedBooking
-        : booking
-    )
-  );
+  previous.map((booking) =>
+    booking.id === normalizedBooking.id
+      ? normalizedBooking
+      : booking
+  )
+);
+};
+
+/* ================= DELETE BOOKING ================= */
+
+const deleteBooking = async (bookingId) => {
+  try {
+    const response = await apiFetch(
+      `/api/bookings/${bookingId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      alert(
+        result.message ||
+          "Failed to delete booking."
+      );
+      return false;
+    }
+
+    setBookings((previous) =>
+      previous.filter(
+        (booking) =>
+          booking.id !== bookingId
+      )
+    );
+
+    return true;
+  } catch (error) {
+    console.error(
+      "Delete Booking Error:",
+      error
+    );
+
+    alert(
+      "Backend server connection failed."
+    );
+
+    return false;
+  }
 };
   /* ================= START SESSION ================= */
 
@@ -606,7 +656,7 @@ const switchActiveSession = async (
       room: newRoom,
     }),
   }
-);s
+);
     const result = await response.json();
 
     if (!response.ok) {
@@ -842,10 +892,9 @@ useEffect(() => {
       "Content-Type": "application/json",
     },
     
-  body: JSON.stringify({
+ body: JSON.stringify({
   name: therapistData.name,
   mobile: therapistData.mobile,
-  password: therapistData.password,
   status: therapistData.status,
 }),
 }
@@ -900,9 +949,6 @@ useEffect(() => {
   name: updatedData.name,
   mobile: updatedData.mobile,
   status: updatedData.status,
-  ...(updatedData.password
-    ? { password: updatedData.password }
-    : {}),
 }),
   }
 );
@@ -1104,9 +1150,11 @@ useEffect(() => {
         bookings,
         addBooking,
         updateBooking,
+        deleteBooking,
         startSession,
         switchActiveSession,
         completeSession,
+        
 
         therapists,
         addTherapist,

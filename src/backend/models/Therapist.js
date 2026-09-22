@@ -15,12 +15,6 @@ const therapistSchema = new mongoose.Schema(
       trim: true,
     },
 
-    password: {
-      type: String,
-      required: true,
-      minlength: 4,
-    },
-
     status: {
       type: String,
       enum: ["Available", "Busy", "Leave"],

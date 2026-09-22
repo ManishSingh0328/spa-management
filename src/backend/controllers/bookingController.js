@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const Booking = require("../models/Booking");
 const Therapist = require("../models/Therapist");
 const Room = require("../models/Room");
@@ -120,17 +121,20 @@ const createBooking = async (req, res) => {
           "Therapist or room is already booked for this time.",
       });
     }
+const sessionToken = crypto
+  .randomBytes(32)
+  .toString("hex");
 
-    // Create booking
-    const booking =
-      await Booking.create(req.body);
-
-    return res.status(201).json({
-      success: true,
-      message:
-        "Booking created successfully",
-      data: booking,
-    });
+const booking = await Booking.create({
+  ...req.body,
+  sessionToken,
+});
+    
+return res.status(201).json({
+  success: true,
+  message: "Booking created successfully",
+  data: booking,
+});
   } catch (error) {
     console.error(
       "Create Booking Error:",
@@ -460,171 +464,78 @@ const completeBookingSession = async (
     });
   }
 };
-// ================= THERAPIST ASSIGNED BOOKINGS =================
+// ================= PUBLIC SESSION DETAILS =================
 
-const getTherapistBookings = async (req, res) => {
+const getPublicSession = async (req, res) => {
   try {
-    const therapist = req.therapist;
+    const booking = await Booking.findOne({
+      sessionToken: req.params.token,
+    });
 
-    if (!therapist) {
-      return res.status(401).json({
+    if (!booking) {
+      return res.status(404).json({
         success: false,
-        message: "Therapist not authorized.",
+        message: "Session not found",
       });
     }
 
-    // Local date: YYYY-MM-DD
-    const today = new Date();
-
-    const year = today.getFullYear();
-
-    const month = String(
-      today.getMonth() + 1
-    ).padStart(2, "0");
-
-    const day = String(
-      today.getDate()
-    ).padStart(2, "0");
-
-    const todayDate = `${year}-${month}-${day}`;
-
-    const bookings = await Booking.find({
-      therapist: therapist.name,
-      date: todayDate,
-      status: {
-        $in: ["Upcoming", "In Service"],
+    return res.status(200).json({
+      success: true,
+      data: {
+        clientName: booking.clientName,
+        room: booking.room,
+        service: booking.service,
+        duration: booking.duration,
+        therapist: booking.therapist,
+        status: booking.status,
+        startedAt: booking.startedAt,
+        endAt: booking.endAt,
       },
-    }).sort({
-      time: 1,
-    });
-
-    return res.status(200).json({
-      success: true,
-      count: bookings.length,
-      data: bookings,
     });
   } catch (error) {
-    console.error(
-      "Therapist Bookings Error:",
-      error
-    );
-
     return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-// ================= ACCEPT THERAPIST ASSIGNMENT =================
 
-const acceptTherapistBooking = async (req, res) => {
+// ================= PUBLIC START SESSION =================
+
+const startPublicSession = async (req, res) => {
   try {
-    const therapist = req.therapist;
-
-    if (!therapist) {
-      return res.status(401).json({
-        success: false,
-        message: "Therapist not authorized.",
-      });
-    }
-
-    const booking = await Booking.findById(
-      req.params.id
-    );
+    const booking = await Booking.findOne({
+      sessionToken: req.params.token,
+    });
 
     if (!booking) {
       return res.status(404).json({
         success: false,
-        message: "Booking not found.",
-      });
-    }
-
-    if (booking.therapist !== therapist.name) {
-      return res.status(403).json({
-        success: false,
-        message:
-          "This booking is not assigned to you.",
+        message: "Session not found",
       });
     }
 
     if (booking.status !== "Upcoming") {
       return res.status(400).json({
         success: false,
-        message:
-          "Only upcoming bookings can be accepted.",
+        message: "Session cannot be started",
       });
     }
 
-    if (booking.therapistAccepted) {
-      return res.status(200).json({
-        success: true,
-        message:
-          "Assignment already accepted.",
-        data: booking,
-      });
-    }
-
-    booking.therapistAccepted = true;
-    booking.acceptedAt = new Date();
-
-    await booking.save();
-
-    return res.status(200).json({
-      success: true,
-      message:
-        "Assignment accepted successfully.",
-      data: booking,
+    const activeConflict = await Booking.findOne({
+      _id: { $ne: booking._id },
+      status: "In Service",
+      $or: [
+        { therapist: booking.therapist },
+        { room: booking.room },
+      ],
     });
-  } catch (error) {
-    console.error(
-      "Accept Therapist Booking Error:",
-      error
-    );
 
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-// ================= THERAPIST START SESSION =================
-
-const startTherapistSession = async (req, res) => {
-  try {
-    const therapist = req.therapist;
-
-    const booking = await Booking.findById(
-      req.params.id
-    );
-
-    if (!booking) {
-      return res.status(404).json({
-        success: false,
-        message: "Booking not found.",
-      });
-    }
-
-    if (booking.therapist !== therapist.name) {
-      return res.status(403).json({
+    if (activeConflict) {
+      return res.status(409).json({
         success: false,
         message:
-          "This booking is not assigned to you.",
-      });
-    }
-
-    if (!booking.therapistAccepted) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "Please accept assignment first.",
-      });
-    }
-
-    if (booking.status !== "Upcoming") {
-      return res.status(400).json({
-        success: false,
-        message:
-          "Only upcoming session can be started.",
+          "Therapist or room is already in an active session.",
       });
     }
 
@@ -633,41 +544,36 @@ const startTherapistSession = async (req, res) => {
 
     const startedAt = new Date();
 
-    const endAt = new Date(
+    booking.status = "In Service";
+    booking.startedAt = startedAt;
+    booking.endAt = new Date(
       startedAt.getTime() +
         durationMinutes * 60 * 1000
     );
-
-    booking.status = "In Service";
-    booking.startedAt = startedAt;
-    booking.endAt = endAt;
     booking.completedAt = null;
 
     await booking.save();
 
     return res.status(200).json({
       success: true,
-      message: "Session started successfully.",
-      data: booking,
+      message: "Session started successfully",
+      data: {
+        status: booking.status,
+        startedAt: booking.startedAt,
+        endAt: booking.endAt,
+      },
     });
   } catch (error) {
-    console.error(
-      "Therapist Start Session Error:",
-      error
-    );
-
     return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-/* ================= THERAPIST COMPLETE SESSION ================= */
+// ================= DELETE UPCOMING BOOKING =================
 
-const completeTherapistSession = async (req, res) => {
+const deleteBooking = async (req, res) => {
   try {
-    const therapist = req.therapist;
-
     const booking = await Booking.findById(
       req.params.id
     );
@@ -675,42 +581,30 @@ const completeTherapistSession = async (req, res) => {
     if (!booking) {
       return res.status(404).json({
         success: false,
-        message: "Booking not found.",
+        message: "Booking not found",
       });
     }
 
-    // Therapist can complete only own booking
-    if (booking.therapist !== therapist.name) {
-      return res.status(403).json({
-        success: false,
-        message:
-          "This booking is not assigned to you.",
-      });
-    }
-
-    // Only running session can be completed
-    if (booking.status !== "In Service") {
+    if (booking.status !== "Upcoming") {
       return res.status(400).json({
         success: false,
         message:
-          "Only running session can be completed.",
+          "Only upcoming bookings can be deleted.",
       });
     }
 
-    booking.status = "Completed";
-    booking.completedAt = new Date();
-
-    await booking.save();
+    await booking.deleteOne();
 
     return res.status(200).json({
       success: true,
-      message:
-        "Session completed successfully.",
-      data: booking,
+      message: "Booking deleted successfully.",
+      data: {
+        id: booking._id,
+      },
     });
   } catch (error) {
     console.error(
-      "Therapist Complete Session Error:",
+      "Delete Booking Error:",
       error
     );
 
@@ -720,9 +614,50 @@ const completeTherapistSession = async (req, res) => {
     });
   }
 };
+// ================= PUBLIC COMPLETE SESSION =================
 
+const completePublicSession = async (req, res) => {
+  try {
+    const booking = await Booking.findOne({
+      sessionToken: req.params.token,
+    });
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Session not found",
+      });
+    }
+
+    if (booking.status !== "In Service") {
+      return res.status(400).json({
+        success: false,
+        message: "Session cannot be completed",
+      });
+    }
+
+    booking.status = "Completed";
+    booking.completedAt = new Date();
+    booking.endAt = null;
+
+    await booking.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Session completed successfully",
+      data: {
+        status: booking.status,
+        completedAt: booking.completedAt,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 // ================= EXPORTS =================
-
 module.exports = {
   createBooking,
   getBookings,
@@ -730,8 +665,8 @@ module.exports = {
   updateBooking,
   switchActiveSession,
   completeBookingSession,
-   getTherapistBookings,
-   acceptTherapistBooking,
-   startTherapistSession,
-   completeTherapistSession,
+  deleteBooking,
+  getPublicSession,
+  startPublicSession,
+  completePublicSession,
 };
