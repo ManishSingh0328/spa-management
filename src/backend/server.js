@@ -21,31 +21,38 @@ const allowedOrigins = [
   "http://localhost:5175",
   "http://localhost:4173",
   "http://192.168.1.4:4173",
-  "https://spa-therapist-app.vercel.app",
+  "https://spa-management-t3mx.vercel.app",
 ];
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "PATCH",
-      "DELETE",
-      "OPTIONS",
-    ],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-    ],
-  })
-);
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    // Allow this project's Vercel preview deployments
+    if (
+      origin.startsWith("https://spa-management-") &&
+      origin.endsWith(".vercel.app")
+    ) {
+      return callback(null, true);
+    }
+
+    console.log("Blocked by CORS:", origin);
+    return callback(new Error("Not allowed by CORS"));
+  },
+
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 /* ================= MIDDLEWARE ================= */
 
 app.use(express.json());
