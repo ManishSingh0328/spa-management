@@ -45,6 +45,26 @@ function NewBooking({ isOpen, onClose }) {
     useState("");
     const [createdBooking, setCreatedBooking] =
   useState(null);
+  /* ================= RETURNING CLIENT ================= */
+
+const handleMobileChange = (value) => {
+  const cleanMobile = value.replace(/\D/g, "").slice(0, 10);
+
+  setMobile(cleanMobile);
+
+  if (cleanMobile.length !== 10) {
+    return;
+  }
+
+  const existingCustomer = [...bookings]
+    .reverse()
+    .find((booking) => booking.mobile === cleanMobile);
+
+  if (existingCustomer) {
+    setClientName(existingCustomer.clientName || "");
+    setGender(existingCustomer.gender || "");
+  }
+};
 
   /* ================= CURRENT AVAILABILITY ================= */
 
@@ -483,19 +503,14 @@ if (!isOpen) {
                 </label>
 
                 <input
-                  type="tel"
-                  maxLength="10"
-                  placeholder="10 digit mobile number"
-                  value={mobile}
-                  onChange={(e) =>
-                    setMobile(
-                      e.target.value.replace(
-                        /\D/g,
-                        ""
-                      )
-                    )
-                  }
-                />
+  type="tel"
+  maxLength="10"
+  placeholder="10 digit mobile number"
+  value={mobile}
+  onChange={(e) =>
+    handleMobileChange(e.target.value)
+  }
+/>
               </div>
 
               <div className="booking-form-group">
